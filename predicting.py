@@ -1,15 +1,16 @@
 import numpy as np
-import panda as pd
-from training import training as tr
+import pandas as pd
+import training as tr
 
 
 def predicting():
     theta = [0.0, 0.0]
-    mileage = input("Enter the mileage of the car:\n")
+    mileage = float(input("Enter the mileage of the car:\n"))
     estimatedPrice = theta[0] + (theta[1] * mileage)
     print(f"Estimated price before training : {estimatedPrice}")
     theta = tr.training(theta)
-
+    estimatedPrice = theta[0] + (theta[1] * mileage)
+    print(f"Estimated price after 1 iteration : {estimatedPrice}")
 
 
 def main():

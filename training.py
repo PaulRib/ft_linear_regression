@@ -12,9 +12,9 @@ def training(theta: list[float]) -> list[float]:
     data = pd.read_csv("data.csv")
     km = data["km"].tolist()
     price = data["price"].tolist()
-    estimated_price = [0.0] * len(price)
     normal_price = normalizing(price)
     normal_km = normalizing(km)
+    estimated_price = [theta[0] + (theta[1] * v) for v in normal_km]
 
     total_error = sum(p - v for p, v in zip(estimated_price, normal_price))
     tmp_theta0 = 0.1 * (total_error / len(normal_price))
@@ -22,8 +22,4 @@ def training(theta: list[float]) -> list[float]:
     total_error = sum((p - v) * k for p, v, k in zip(estimated_price, normal_price, normal_km))
     tmp_theta1 = 0.1 * (total_error / len(normal_price))
     theta[1] -= tmp_theta1
-    print(theta[0], theta[1])
     return theta
-
-if __name__ == "__main__":
-    training([0.0, 0.0])
