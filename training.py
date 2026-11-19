@@ -1,3 +1,8 @@
+import json
+import pandas as pd
+import data as dt
+
+
 def training(theta: list[float], n_km: list[float],
              n_price: list[float]) -> list[float]:
     min_error = 0.000001
@@ -19,3 +24,23 @@ def training(theta: list[float], n_km: list[float],
         theta[1] -= tmp_theta1
         print(f"Iteration {i + 1} : cost : {error_cost}")
     return theta
+
+
+def main():
+    try:
+        theta = [0.0, 0.0]
+        data = pd.read_csv("data.csv")
+        km = data["km"].tolist()
+        price = data["price"].tolist()
+        n_price, m_price, s_price = dt.normalizing(price)
+        n_km, m_km, s_km = dt.normalizing(km)
+        n_theta = training(theta, n_km, n_price)
+        theta = dt.denormalize(n_theta, s_km, s_price, m_km, m_price)
+        with open("theta.json", "w") as file:
+            json.dump(theta, file)
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+if __name__ == "__main__":
+    main()

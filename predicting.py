@@ -1,29 +1,26 @@
-import pandas as pd
-import training as tr
-import data as dt
+import json
 
 
 def predicting(theta: list[float], mileage: float) -> float:
-    n_theta = theta
-    data = pd.read_csv("data.csv")
-    km = data["km"].tolist()
-    price = data["price"].tolist()
-    n_price, m_price, s_price = dt.normalizing(price)
-    n_km, m_km, s_km = dt.normalizing(km)
-    n_theta = tr.training(theta, n_km, n_price)
-    theta = dt.denormalize(n_theta, s_km, s_price, m_km, m_price)
-    estimatedPrice = theta[0] + (theta[1] * mileage)
-    return estimatedPrice
+    return theta[0] + (theta[1] * mileage)
 
 
 def main():
     try:
+        mileage = int(input("Enter a mileage:\n"))
         theta = [0.0, 0.0]
-        mileage = float(input("Enter the mileage of the car:\n"))
-        estimatedPrice = theta[0] + (theta[1] * mileage)
-        print(f"Estimated price before training : {estimatedPrice}")
         estimatedPrice = predicting(theta, mileage)
-        print(f"Estimated price after training : {estimatedPrice}")
+        print(f"Estimated price for this mileage: \
+{estimatedPrice}")
+        try:
+            with open("theta.json", "r") as file:
+                theta = json.load(file)
+        except FileNotFoundError as e:
+            print(f"Error: {e}. Model can't predict without training!")
+            theta = [0.0, 0.0]
+        estimatedPrice = predicting(theta, mileage)
+        print(f"Estimated price for this mileage after training: \
+{int(estimatedPrice)}")
     except Exception as e:
         print(f"Error: {e}")
 

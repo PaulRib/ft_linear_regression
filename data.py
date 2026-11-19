@@ -1,4 +1,4 @@
-def normalizing(value: list[int]) -> list[float]:
+def normalizing(value: list[int]) -> tuple[list[float], float, float]:
     mean = sum(value) / len(value)
     var = sum((v - mean) ** 2 for v in value) / len(value)
     normalized = [(v - mean) / (var ** 0.5) for v in value]
