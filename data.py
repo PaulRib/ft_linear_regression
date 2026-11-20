@@ -1,6 +1,8 @@
 def normalizing(value: list[int]) -> tuple[list[float], float, float]:
     mean = sum(value) / len(value)
     var = sum((v - mean) ** 2 for v in value) / len(value)
+    if var == 0:
+        raise ValueError("Cannot normalize data with zero variance!")
     normalized = [(v - mean) / (var ** 0.5) for v in value]
     return normalized, mean, var ** 0.5
 

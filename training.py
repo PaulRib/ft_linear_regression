@@ -32,6 +32,8 @@ def main():
         data = pd.read_csv("data.csv")
         km = data["km"].tolist()
         price = data["price"].tolist()
+        if not km or not price:
+            raise ValueError("Dataset cannot be empty!")
         n_price, m_price, s_price = dt.normalizing(price)
         n_km, m_km, s_km = dt.normalizing(km)
         n_theta = training(theta, n_km, n_price)

@@ -48,6 +48,8 @@ def main():
         data = pd.read_csv("data.csv")
         km = data["km"].tolist()
         price = data["price"].tolist()
+        if not km or not price:
+            raise ValueError("Dataset cannot be empty!")
         plot(km, price)
         with open("theta.json", "r") as file:
             theta = json.load(file)
